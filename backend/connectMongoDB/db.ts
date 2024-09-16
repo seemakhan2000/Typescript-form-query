@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const mongoDB = "mongodb+srv://seema:seema38436065@cluster0.ow7iytj.mongodb.net/ReactProject";
+const mongoDB: string = process.env.MONGODB_URL as string;
 
 async function connectDB(): Promise<void> {
     try {
@@ -14,3 +14,5 @@ async function connectDB(): Promise<void> {
 }
 
 export default connectDB;
+
+
