@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 interface ISignup extends Document {
   username: string;
@@ -15,17 +15,17 @@ const signupSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   phone: {
     type: String,
     required: true,
   },
- password: {
+  password: {
     type: String,
     required: true,
   },
 });
 
-const SignupModel = mongoose.model<ISignup>('signup', signupSchema);
+const SignupModel = mongoose.model<ISignup>("signup", signupSchema);
 export default SignupModel;

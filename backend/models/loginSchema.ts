@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 interface ILogin extends Document {
-  phone:string;
+  phone: string;
   email: string;
   password: string;
 }
@@ -22,5 +22,5 @@ const loginSchema: Schema = new Schema({
   },
 });
 
-const LoginModel = mongoose.model<ILogin>('Login', loginSchema);
+const LoginModel = mongoose.model<ILogin>("Login", loginSchema);
 export default LoginModel;

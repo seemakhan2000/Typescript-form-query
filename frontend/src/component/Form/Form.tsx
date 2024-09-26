@@ -1,8 +1,6 @@
-/*Imports React and hooks: Imports the necessary React library and useState hook for managing state.*/
 import React, { useState } from "react";
-/*Imports a custom hook, likely created with React Query, for handling mutation logic related to adding a user*/
-import { useAddUserMutation } from '../../Mutation/mutation';
-import { FormValue } from '../Types/Types';
+import { useAddUserMutation } from "../../Mutation/mutation";
+import { FormValue } from "../Types/Types";
 
 interface ValidationError {
   username?: string;
@@ -10,25 +8,23 @@ interface ValidationError {
   phone?: string;
   password?: string;
 }
-/*An interface for the props the Form component expects. Here, onFormSubmit is a callback function to be
- called when the form is successfully submitted.*/
+
 interface UserFormProps {
   onFormSubmit: () => void;
 }
-/*A functional React component with UserFormProps type, which receives onFormSubmit as a prop*/
+
 const Form: React.FC<UserFormProps> = ({ onFormSubmit }) => {
-  /*Initializes state to manage form values with empty strings for username, email, phone, and password*/
   const [formValue, setFormValue] = useState<FormValue>({
     username: "",
     email: "",
     phone: "",
     password: "",
   });
-/* Initializes state to manage validation errors, starting with an empty object.*/
+
   const [validationErrors, setValidationErrors] = useState<ValidationError>({});
-  /*useAddUserMutation takes onFormSubmit as a parameter, which is a callback function to be executed after a successful mutation*/
+
   const mutation = useAddUserMutation(onFormSubmit);
-/*Updates the formValue state whenever an input field changes. It uses the name attribute of the input to determine which field to update and sets the new value*/
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
@@ -58,13 +54,21 @@ const Form: React.FC<UserFormProps> = ({ onFormSubmit }) => {
     setValidationErrors(errors);
     return isValid;
   };
-/*Prevents the default form submission behavior. Calls handleValidation to check if the form is valid. If it 
-is valid, mutation.mutate is called with the form values, triggering the mutation to add a user*/
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (handleValidation()) {
-
-      mutation.mutate(formValue);
+      mutation.mutate(formValue, {
+        onSuccess: () => {
+          // Reset form values after successful submission
+          setFormValue({
+            username: "",
+            email: "",
+            phone: "",
+            password: "",
+          });
+        },
+      });
     }
   };
 

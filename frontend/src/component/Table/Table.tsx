@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
-//Imports the useQuery hook from react-query for fetching data.
-import { useQuery } from 'react-query';
-//Imports the function to fetch users.
-import { fetchUsers } from '../../Services/UserService';
-import { UserData } from '../Types/Types';
-//Imports custom hooks for deleting and updating users.
-import { useDeleteUserMutation, useUpdateUserMutation } from '../../Mutation/mutation';
+import { useQuery } from "react-query";
+
+import { fetchUsers } from "../../Services/UserService";
+import { UserData } from "../Types/Types";
+
+import {
+  useDeleteUserMutation,
+  useUpdateUserMutation,
+} from "../../Mutation/mutation";
 
 const Table: React.FC = () => {
   const [editingUser, setEditingUser] = useState<UserData | null>(null);
   const [showModal, setShowModal] = useState(false);
-// Fetches users from the server and stores them in submittedData. Shows a loading state while fetching.
-// The useQuery hook from react-query is being used here to fetch data from an API endpoint 
-// (fetchUsers function) and manage the state related to that data 
-  const { data: submittedData = [], isLoading } = useQuery<UserData[]>('users', fetchUsers);
-//Initializes the mutation hook for deleting a user
+
+  const { data: submittedData = [], isLoading } = useQuery<UserData[]>(
+    "users",
+    fetchUsers
+  );
+
   const deleteUserMutation = useDeleteUserMutation();
   const updateUserMutation = useUpdateUserMutation();
-
 
   //riggers the mutation to delete a user.
   const handleDelete = (id: string) => {
@@ -38,7 +40,7 @@ const Table: React.FC = () => {
 
   useEffect(() => {
     if (submittedData.length > 0) {
-      console.log('Submitted Data:', submittedData);
+      console.log("Submitted Data:", submittedData);
     }
   }, [submittedData]);
 
@@ -116,7 +118,10 @@ const Table: React.FC = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary save-changes">
+                  <button
+                    type="submit"
+                    className="btn btn-primary save-changes"
+                  >
                     Save changes
                   </button>
                 </form>

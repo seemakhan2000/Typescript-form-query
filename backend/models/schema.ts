@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 interface IUser extends Document {
   username: string;
@@ -14,5 +14,5 @@ const userSchema: Schema = new Schema({
   password: { type: String, required: true },
 });
 
-const ReactModel = mongoose.model<IUser>('React', userSchema);
+const ReactModel = mongoose.model<IUser>("React", userSchema);
 export default ReactModel;

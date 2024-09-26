@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+
 import "./signup.css";
 
 const API_URL = "http://localhost:7007";
@@ -42,7 +43,7 @@ const Signup: React.FC = () => {
 
   const signupMutation = useMutation<ResponseData, Error, FormData>(
     (formData: FormData) =>
-      fetch(`${API_URL}/signup`, {
+      fetch(`${API_URL}/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +52,7 @@ const Signup: React.FC = () => {
       }).then((response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
-            throw new Error(errorData.message || 'Network response was not ok');
+            throw new Error(errorData.message || "Network response was not ok");
           });
         }
         return response.json();
@@ -60,7 +61,7 @@ const Signup: React.FC = () => {
       onSuccess: (data: ResponseData) => {
         if (data.message === "Signup successful") {
           window.alert("Signup successful");
-          console.log('Signup successful :' , data)
+          console.log("Signup successful :", data);
           navigate("/login");
         } else {
           window.alert("Signup successful but received unexpected response");
@@ -72,23 +73,31 @@ const Signup: React.FC = () => {
     }
   );
 
+  
+
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const validateForm = (): boolean => {
-    const errors: FormErrors = { username: "", email: "", phone: "", password: "" };
+    const errors: FormErrors = {
+      username: "",
+      email: "",
+      phone: "",
+      password: "",
+    };
     let isValid = true;
 
     if (formData.username.trim().length < 5) {
       errors.username = "Username must be at least 5 characters";
       isValid = false;
     }
-
-    if (!formData.email.trim()) {
-      errors.email = "Email is required";
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid";
       isValid = false;
     }
+    
 
     if (!formData.phone.trim()) {
       errors.phone = "Phone number is required";
@@ -103,11 +112,14 @@ const Signup: React.FC = () => {
     setFormErrors(errors);
     return isValid;
   };
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
+
       signupMutation.mutate(formData);
+      console.log(formData)
+
+
     }
   };
 
@@ -120,13 +132,17 @@ const Signup: React.FC = () => {
           className="signup-form"
           onSubmit={handleSubmit}
         >
-          <h2 id="title" className="mb-4 text-center">Sign up</h2>
+          <h2 id="title" className="mb-4 text-center">
+            Sign up
+          </h2>
 
           <div className="mb-3">
             <input
               id="username-field"
               type="text"
-              className={`form-control ${formErrors.username ? "is-invalid" : ""}`}
+              className={`form-control ${
+                formErrors.username ? "is-invalid" : ""
+              }`}
               placeholder="Username"
               name="username"
               value={formData.username}
@@ -167,7 +183,9 @@ const Signup: React.FC = () => {
           <div className="mb-3">
             <input
               type="password"
-              className={`form-control ${formErrors.password ? "is-invalid" : ""}`}
+              className={`form-control ${
+                formErrors.password ? "is-invalid" : ""
+              }`}
               placeholder="Password"
               name="password"
               value={formData.password}
@@ -186,7 +204,9 @@ const Signup: React.FC = () => {
               name="remember"
               id="remember"
             />
-            <label className="form-check-label" htmlFor="remember">Remember me</label>
+            <label className="form-check-label" htmlFor="remember">
+              Remember me
+            </label>
           </div>
 
           <div className="d-grid gap-2">
