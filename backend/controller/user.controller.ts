@@ -45,6 +45,7 @@ export const signupUser = async (
 
     res.status(201).json(successResponse("Signup successful"));
   } catch (error: any) {
+    if (error instanceof Error)
     res.status(500).json(errorResponse("Internal Server Error", error.message));
   }
 };
