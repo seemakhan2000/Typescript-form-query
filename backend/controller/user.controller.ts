@@ -45,12 +45,13 @@ export const signupUser = async (
     res.status(201).json(successResponse("Signup successful"));
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Internal Server Error", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Internal Server Error", error.message));
     } else {
       res.status(500).json({ message: "Unknown Error" });
     }
   }
-  
 };
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
@@ -81,12 +82,16 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "1h" }
     );
 
-     res.status(200).json(successResponse("Login successful", { token }));
+    res.status(200).json(successResponse("Login successful", { token }));
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Internal server error", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Internal server error", error.message));
     } else {
-      res.status(500).json(errorResponse("Internal server error", "Unknown error"));
+      res
+        .status(500)
+        .json(errorResponse("Internal server error", "Unknown error"));
     }
   }
 };
@@ -94,12 +99,18 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 export const getData = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await ReactModel.find();
-    res.status(200).json(successResponse("Data retrieved successfully", result));
-  }catch (error) {
+    res
+      .status(200)
+      .json(successResponse("Data retrieved successfully", result));
+  } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Failed to retrieve data", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Failed to retrieve data", error.message));
     } else {
-      res.status(500).json(errorResponse("Failed to retrieve data", "Unknown error"));
+      res
+        .status(500)
+        .json(errorResponse("Failed to retrieve data", "Unknown error"));
     }
   }
 };
@@ -108,12 +119,18 @@ export const postData = async (req: Request, res: Response): Promise<void> => {
   const formData = req.body;
   try {
     const savedFormData = await ReactModel.create(formData);
-    res.status(201).json(successResponse("Form data saved successfully", savedFormData));
+    res
+      .status(201)
+      .json(successResponse("Form data saved successfully", savedFormData));
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Failed to save form data", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Failed to save form data", error.message));
     } else {
-      res.status(500).json(errorResponse("Failed to save form data", "Unknown error"));
+      res
+        .status(500)
+        .json(errorResponse("Failed to save form data", "Unknown error"));
     }
   }
 };
@@ -125,12 +142,18 @@ export const deleteData = async (
   const id = req.params.id;
   try {
     const deletedData = await ReactModel.findByIdAndDelete(id);
-    res.status(200).json(successResponse("Data deleted successfully", deletedData));
+    res
+      .status(200)
+      .json(successResponse("Data deleted successfully", deletedData));
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Failed to delete data", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Failed to delete data", error.message));
     } else {
-      res.status(500).json(errorResponse("Failed to delete data", "Unknown error"));
+      res
+        .status(500)
+        .json(errorResponse("Failed to delete data", "Unknown error"));
     }
   }
 };
@@ -147,12 +170,18 @@ export const updateData = async (
       updatedData,
       { new: true }
     );
-    res.status(200).json(successResponse("Data updated successfully", updatedDocument));
-  }  catch (error) {
+    res
+      .status(200)
+      .json(successResponse("Data updated successfully", updatedDocument));
+  } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json(errorResponse("Failed to update data", error.message));
+      res
+        .status(500)
+        .json(errorResponse("Failed to update data", error.message));
     } else {
-      res.status(500).json(errorResponse("Failed to update data", "Unknown error"));
+      res
+        .status(500)
+        .json(errorResponse("Failed to update data", "Unknown error"));
     }
   }
 };
