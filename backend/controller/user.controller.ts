@@ -22,7 +22,6 @@ export const signupUser = async (
       res.status(400).json(errorResponse("User already exists"));
       return;
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new signupModel({
@@ -44,10 +43,14 @@ export const signupUser = async (
     await newLoginUser.save();
 
     res.status(201).json(successResponse("Signup successful"));
-  } catch (error: any) {
-    if (error instanceof Error)
-    res.status(500).json(errorResponse("Internal Server Error", error.message));
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Internal Server Error", error.message));
+    } else {
+      res.status(500).json({ message: "Unknown Error" });
+    }
   }
+  
 };
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
@@ -56,7 +59,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { phone, email, password } = req.body;
     const user = await loginModel.findOne({ email });
     if (!user) {
-      res.status(400).json({ message: "User not found" });
+      res.status(400).json(errorResponse("User not found"));
       return;
     }
 
@@ -78,36 +81,40 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json(successResponse("Login successful", { token }));
+     res.status(200).json(successResponse("Login successful", { token }));
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json(errorResponse("Internal server error", error.message));
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Internal server error", error.message));
+    } else {
+      res.status(500).json(errorResponse("Internal server error", "Unknown error"));
+    }
   }
 };
 
 export const getData = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await ReactModel.find();
-    res
-      .status(200)
-      .json(successResponse("Data retrieved successfully", result));
-  } catch (error) {
-    res
-      .status(500)
-      .json(errorResponse("Failed to retrieve data", error.message));
+    res.status(200).json(successResponse("Data retrieved successfully", result));
+  }catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Failed to retrieve data", error.message));
+    } else {
+      res.status(500).json(errorResponse("Failed to retrieve data", "Unknown error"));
+    }
   }
 };
+
 export const postData = async (req: Request, res: Response): Promise<void> => {
   const formData = req.body;
   try {
     const savedFormData = await ReactModel.create(formData);
-    res
-      .status(201)
-      .json(successResponse("Form data saved successfully", savedFormData));
+    res.status(201).json(successResponse("Form data saved successfully", savedFormData));
   } catch (error) {
-    res
-      .status(500)
-      .json(errorResponse("Failed to save form data", error.message));
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Failed to save form data", error.message));
+    } else {
+      res.status(500).json(errorResponse("Failed to save form data", "Unknown error"));
+    }
   }
 };
 
@@ -118,11 +125,13 @@ export const deleteData = async (
   const id = req.params.id;
   try {
     const deletedData = await ReactModel.findByIdAndDelete(id);
-    res
-      .status(200)
-      .json(successResponse("Data deleted successfully", deletedData));
+    res.status(200).json(successResponse("Data deleted successfully", deletedData));
   } catch (error) {
-    res.status(500).json(errorResponse("Failed to delete data", error.message));
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Failed to delete data", error.message));
+    } else {
+      res.status(500).json(errorResponse("Failed to delete data", "Unknown error"));
+    }
   }
 };
 
@@ -138,13 +147,16 @@ export const updateData = async (
       updatedData,
       { new: true }
     );
-    res
-      .status(200)
-      .json(successResponse("Data updated successfully", updatedDocument));
-  } catch (error) {
-    res.status(500).json(errorResponse("Failed to update data", error.message));
+    res.status(200).json(successResponse("Data updated successfully", updatedDocument));
+  }  catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json(errorResponse("Failed to update data", error.message));
+    } else {
+      res.status(500).json(errorResponse("Failed to update data", "Unknown error"));
+    }
   }
 };
+
 export const protectedRoute = (req: Request, res: Response): void => {
-  res.status(200).json(successResponse("Protected data"));
+  res.send(successResponse("Protected data"));
 };
