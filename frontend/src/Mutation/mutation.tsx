@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 
-import { addUser, deleteUser, updateUser } from "../Services/UserService";
+import { addUser, deleteUser, updateUser } from "../services/userService";
 
 export const useAddUserMutation = (onFormSubmit: () => void) => {
   return useMutation(addUser, {
@@ -15,7 +15,7 @@ export const useDeleteUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries("users"); // Invalidate and refetch users query
+      queryClient.invalidateQueries("users");
     },
   });
 };

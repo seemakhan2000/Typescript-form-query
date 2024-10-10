@@ -1,18 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
-
-interface IUser extends Document {
+export interface ISignup extends Document {
   username: string;
   email: string;
   phone: string;
   password: string;
 }
 
-const userSchema = new Schema({
+const SignupSchema: Schema = new Schema({
   username: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
 });
 
-const ReactModel = mongoose.model<IUser>("React", userSchema);
-export default ReactModel;
+const SignupModel = mongoose.model<ISignup>("SignupModel", SignupSchema);
+export default SignupModel;

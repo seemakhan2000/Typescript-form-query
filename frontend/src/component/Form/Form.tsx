@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAddUserMutation } from "../../Mutation/mutation";
-import { FormValue } from "../Types/Types";
+import { useAddUserMutation } from "../../mutation/mutation";
+import { FormValue } from "../type/type";
 
 interface ValidationError {
   username?: string;

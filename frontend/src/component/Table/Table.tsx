@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 
-import { fetchUsers } from "../../Services/UserService";
-import { UserData } from "../Types/Types";
+import { fetchUsers } from "../../services/userService";
+import { UserData } from "../type/type";
+import "./table.css";
 
 import {
   useDeleteUserMutation,
   useUpdateUserMutation,
-} from "../../Mutation/mutation";
+} from "../../mutation/mutation";
 
 const Table: React.FC = () => {
   const [editingUser, setEditingUser] = useState<UserData | null>(null);
@@ -21,18 +22,15 @@ const Table: React.FC = () => {
   const deleteUserMutation = useDeleteUserMutation();
   const updateUserMutation = useUpdateUserMutation();
 
-  //riggers the mutation to delete a user.
   const handleDelete = (id: string) => {
     deleteUserMutation.mutate(id);
   };
 
-  //Opens the modal and sets the user to be edited
   const handleEditClick = (user: UserData) => {
     setEditingUser(user);
     setShowModal(true);
   };
 
-  //Closes the modal and resets the editing use
   const handleModalClose = () => {
     setShowModal(false);
     setEditingUser(null);
@@ -61,7 +59,9 @@ const Table: React.FC = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <div className="loader"></div>;
+  }
 
   return (
     <div>

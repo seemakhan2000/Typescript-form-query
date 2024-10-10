@@ -1,10 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./signup.css";
 
-const API_URL = "http://localhost:7007";
+const API_URL = process.env.REACT_APP_API_URL;
 
 interface FormData {
   username: string;
@@ -60,21 +62,18 @@ const Signup: React.FC = () => {
     {
       onSuccess: (data: ResponseData) => {
         if (data.message === "Signup successful") {
-          window.alert("Signup successful");
+          toast.success("Signup successful");
           console.log("Signup successful :", data);
           navigate("/login");
         } else {
-          window.alert("Signup successful but received unexpected response");
+          toast("Signup successful but received unexpected response");
         }
       },
       onError: (error: Error) => {
-        window.alert(`Signup failed: ${error.message}`);
+        toast.error(`Signup failed: ${error.message}`);
       },
     }
   );
-
-  
-
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -97,7 +96,6 @@ const Signup: React.FC = () => {
       errors.email = "Email is invalid";
       isValid = false;
     }
-    
 
     if (!formData.phone.trim()) {
       errors.phone = "Phone number is required";
@@ -115,11 +113,7 @@ const Signup: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-
       signupMutation.mutate(formData);
-      console.log(formData)
-
-
     }
   };
 

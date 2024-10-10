@@ -26,6 +26,12 @@
   },
   "include": [
     "src",
-    "types"  
+    "types",
+    "webpack.config.jsx"
+  ],
+  "exclude": [
+    "node_modules",                           
+    "build",                                  
+    "src/component/Verification/verification.tsx",
   ]
 }

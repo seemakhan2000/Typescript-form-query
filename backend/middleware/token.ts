@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 
+// Define a custom request interface to include the user property
 interface CustomRequest extends Request {
   user?: string | object;
 }
@@ -10,19 +11,24 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ): Response | void => {
-  const token = req.header("Authorization");
+  // Get the token from the Authorization header
+  const token = req.headers["authorization"];
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Access denied. No token provided." });
+    return res.status(500).json({ error: "No token provided" });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+  // Remove 'Bearer' prefix if present
+  const authToken = token.replace(/bearer/gim, "").trim();
+
+  // Verify the token using JWT
+  jwt.verify(authToken, process.env.JWT_SECRET as string, (err, decoded) => {
+    if (err) {
+      return res.status(500).json({ error: "Invalid token" });
+    }
+
+    // Attach the decoded token to the request object
     req.user = decoded;
     next();
-  } catch (ex) {
-    res.status(400).json({ message: "Invalid token." });
-  }
+  });
 };
