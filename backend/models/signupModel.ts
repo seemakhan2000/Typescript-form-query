@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+
 export interface ISignup extends Document {
   username: string;
   email: string;

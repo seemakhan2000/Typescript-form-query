@@ -1,24 +1,17 @@
 import { Router } from "express";
 
-import {
-  getUser,
-  postUser,
-  deleteUser,
-  updateUser,
-  loginUser,
-  signupUser
-} from "../controller/user.controller";
+import { userController } from '../controller/user.controller';
 
 import { verifyToken } from "../middleware/token";
 const userRouter = Router();
 
-userRouter.get("/get",  getUser);
-userRouter.post("/", verifyToken, postUser);
-userRouter.delete("/delete/:id", verifyToken, deleteUser);
-userRouter.put("/update/:id", verifyToken, updateUser);
+userRouter.get("/get",  userController.getUser);
+userRouter.post("/", verifyToken, userController.postUser);
+userRouter.delete("/delete/:id", verifyToken, userController.deleteUser);
+userRouter.put("/update/:id", verifyToken, userController.updateUser);
 
-userRouter.post("/login", loginUser);
-userRouter.post("/signup", signupUser);
+userRouter.post("/login", userController.loginUser);
+userRouter.post("/signup",userController.signupUser);
 
 
 

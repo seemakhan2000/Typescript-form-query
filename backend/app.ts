@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-const Joi = require("joi");
 import cors from "cors";
 
 import userRouter from "./router/user.router";
