@@ -17,8 +17,8 @@ jspm_packages/
 .env
 
 # Build directory
-build/
-dist/
+/frontend/build
+
 
 # Ignore specific CSS files
 main.5de1009f.css
