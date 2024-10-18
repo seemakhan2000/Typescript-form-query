@@ -1,17 +1,17 @@
 import { Router } from "express";
 
-import { userController } from '../controller/user.controller';
+import { userControllers } from '../controller/user.controller';
 
 import { verifyToken } from "../middleware/token";
 const userRouter = Router();
 
-userRouter.get("/get",  userController.getUser);
-userRouter.post("/", verifyToken, userController.postUser);
-userRouter.delete("/delete/:id", verifyToken, userController.deleteUser);
-userRouter.put("/update/:id", verifyToken, userController.updateUser);
+userRouter.get("/get",  userControllers.getUser);
+userRouter.post("/", verifyToken, userControllers.postUser);
+userRouter.delete("/delete/:id", verifyToken, userControllers.deleteUser);
+userRouter.put("/update/:id", verifyToken, userControllers.updateUser);
 
-userRouter.post("/login", userController.loginUser);
-userRouter.post("/signup",userController.signupUser);
+userRouter.post("/login", userControllers.loginUser);
+userRouter.post("/signup",userControllers.signupUser);
 
 
 

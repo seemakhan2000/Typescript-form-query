@@ -10,10 +10,16 @@ import SignupModel from "../models/signupModel";
 import { getEnvVariable } from "./env";
 
 export class UserController {
+  constructor() {
+    this.signupUser = this.signupUser.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.postUser = this.postUser.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
+  }
   // Method to handle success responses
-  private sendSuccessResponse(res: Response,
-     message: string,
-      data?: any) {
+  private sendSuccessResponse(res: Response, message: string, data?: any) {
     return res.status(200).json(successResponse(message, data));
   }
 
@@ -31,7 +37,7 @@ export class UserController {
     const { error, value } = validateSignupData(req.body);
 
     if (error) {
-      this.sendErrorResponse(res, "Invalid signup data", 500);
+      this.sendErrorResponse(res, "Invalid signup data");
       return;
     }
 
@@ -39,7 +45,7 @@ export class UserController {
       const existingUser = await SignupModel.findOne({ email });
 
       if (existingUser) {
-        this.sendErrorResponse(res, "User already exists", 500);
+        this.sendErrorResponse(res, "User already exists");
         return;
       }
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -68,14 +74,14 @@ export class UserController {
       const user = await SignupModel.findOne({ email });
 
       if (!user) {
-        this.sendErrorResponse(res, "User not found", 500);
+        this.sendErrorResponse(res, "User not found");
         return;
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        this.sendErrorResponse(res, "Invalid password", 500);
+        this.sendErrorResponse(res, "Invalid password");
         return;
       }
 
@@ -87,7 +93,7 @@ export class UserController {
       this.sendSuccessResponse(res, "Login successful", { token });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Internal server error";
+        error instanceof Error ? error.message : "Failed to retrieve data";
       this.sendErrorResponse(res, message);
     }
   }
@@ -108,7 +114,7 @@ export class UserController {
 
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      this.sendErrorResponse(res, "Unauthorized: No token provided", 500);
+      this.sendErrorResponse(res, "Unauthorized: No token provided");
       return;
     }
 
@@ -119,7 +125,7 @@ export class UserController {
       this.sendSuccessResponse(res, "User saved successfully", savedUser);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Internal server error";
+        error instanceof Error ? error.message : "Failed to retrieve data";
       this.sendErrorResponse(res, message);
     }
   }
@@ -129,13 +135,13 @@ export class UserController {
     const updateUser = req.body;
 
     if (!id || !mongoose.isValidObjectId(id)) {
-      this.sendErrorResponse(res, "Invalid User ID", 500);
+      this.sendErrorResponse(res, "Invalid User ID");
       return;
     }
 
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      this.sendErrorResponse(res, "Unauthorized: No token provided", 500);
+      this.sendErrorResponse(res, "Unauthorized: No token provided");
       return;
     }
 
@@ -160,13 +166,13 @@ export class UserController {
     const id = req.params.id;
 
     if (!id || !mongoose.isValidObjectId(id)) {
-      this.sendErrorResponse(res, "Invalid User ID", 500);
+      this.sendErrorResponse(res, "Invalid User ID");
       return;
     }
 
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      this.sendErrorResponse(res, "Unauthorized: No token provided", 500);
+      this.sendErrorResponse(res, "Unauthorized: No token provided");
       return;
     }
 
@@ -181,4 +187,4 @@ export class UserController {
   }
 }
 
-export const userController = new UserController();
+export const userControllers = new UserController();

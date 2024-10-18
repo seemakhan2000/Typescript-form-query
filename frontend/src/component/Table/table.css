@@ -20,7 +20,7 @@
   }
 }
 
-.table {
+.table-container {
   --bs-table-bg: transparent;
   --bs-table-accent-bg: transparent;
   --bs-table-striped-color: #212529;
@@ -29,7 +29,7 @@
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
   --bs-table-hover-color: #212529;
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
-  width: 97%;
+  width: 165%;
   margin-bottom: 1rem;
   background-color: lightyellow;
   color: black;
@@ -38,4 +38,13 @@
   border-collapse: collapse;
   margin-left: 90px;
   margin-bottom: 320px;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  margin-left: 5px;
+  width: 38px;
+  height: 37px;
 }

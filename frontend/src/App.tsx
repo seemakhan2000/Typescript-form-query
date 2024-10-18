@@ -23,18 +23,18 @@ const App: React.FC = () => {
             path="/form"
             element={
               <>
-                <div className="addButton">
+                <div className="addButtonContainer">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary add-user-btn"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                   >
                     Add User
                   </button>
-
-                  {/* Logout Button */}
-
+                </div>
+                {/* Logout Button */}
+                <div className="logout-btn-container">
                   <Logout />
                 </div>
                 {/* Modal for Adding User */}
@@ -69,8 +69,9 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Table Component */}
-                <Table />
+                <div className="table-container">
+                  <Table />
+                </div>
               </>
             }
           />
