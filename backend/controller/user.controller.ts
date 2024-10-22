@@ -4,6 +4,12 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 import { successResponse, errorResponse } from "./types/response";
+import {
+  NotFound,
+  ValidationError,
+  InvalidRequest,
+  UnexpectedError,
+} from "./errorResponse";
 import { validateSignupData } from "../models/signUpValidate";
 import { loginValidation } from "../models/loginValidation/loginValidation";
 import ReactModel from "../models/schema";
@@ -29,12 +35,20 @@ export class UserController {
     return res.status(statusCode).json(successResponse(message, data));
   }
 
-  private sendErrorResponse(
-    res: Response,
-    message: string = "Internal Server Error",
-    statusCode: number = 500
-  ) {
-    return res.status(statusCode).json(errorResponse(message));
+  private sendErrorResponse(res: Response, error: string | Error) {
+    const message =
+      typeof error === "string"
+        ? error
+        : error.message || "Internal Server Error";
+    const status =
+      error instanceof NotFound
+        ? 404
+        : error instanceof ValidationError || error instanceof InvalidRequest
+        ? 422
+        : error instanceof UnexpectedError
+        ? 500
+        : 500;
+    return res.status(status).json(errorResponse(message));
   }
 
   async signupUser(req: Request, res: Response): Promise<void> {
@@ -67,9 +81,8 @@ export class UserController {
 
       this.sendSuccessResponse(res, "Signup successful", 200, newUser);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to create user";
-      this.sendErrorResponse(res, message);
+      console.error("Signup error:", error);
+      this.sendErrorResponse(res, "Failed to create user");
     }
   }
 
@@ -107,9 +120,8 @@ export class UserController {
 
       this.sendSuccessResponse(res, "Login successful", 200, { token });
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to login";
-      this.sendErrorResponse(res, message);
+      console.error("Login error:", error);
+      this.sendErrorResponse(res, "Failed to login");
     }
   }
 
@@ -118,9 +130,8 @@ export class UserController {
       const result = await ReactModel.find();
       this.sendSuccessResponse(res, "Data retrieved successfully", 200, result);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to retrieve data";
-      this.sendErrorResponse(res, message);
+      console.error("Get user error:", error);
+      this.sendErrorResponse(res, "Failed to retrieve data");
     }
   }
 
@@ -139,9 +150,8 @@ export class UserController {
       const savedUser = await ReactModel.create(user);
       this.sendSuccessResponse(res, "User saved successfully", 201, savedUser);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to save user";
-      this.sendErrorResponse(res, message);
+      console.error("Post user error:", error);
+      this.sendErrorResponse(res, "Failed to save user");
     }
   }
 
@@ -176,9 +186,8 @@ export class UserController {
         updatedUser
       );
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to update user";
-      this.sendErrorResponse(res, message);
+      console.error("Update user error:", error);
+      this.sendErrorResponse(res, "Failed to update user");
     }
   }
 
@@ -205,9 +214,8 @@ export class UserController {
         deletedUser
       );
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to delete user";
-      this.sendErrorResponse(res, message);
+      console.error("Delete user error:", error);
+      this.sendErrorResponse(res, "Failed to delete user");
     }
   }
 }
