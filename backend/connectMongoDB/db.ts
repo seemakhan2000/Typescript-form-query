@@ -11,4 +11,5 @@ async function connectDB(): Promise<void> {
     console.error(`Unable to connect to the server: ${error}`);
   }
 }
+
 export default connectDB;

@@ -35,8 +35,7 @@ export const fetchUsers = async () => {
 };
 // Delete User
 export const deleteUser = async (id: string) => {
-  if (!getToken())
- {
+  if (!getToken()) {
     console.log("No token found, redirecting to login.");
     window.location.href = "/login";
     return;

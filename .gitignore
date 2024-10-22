@@ -19,6 +19,8 @@ jspm_packages/
 # Build directory
 /frontend/build
 
+# Ignore ESLint config
+/frontend/eslint.config.js
 
 # Ignore specific CSS files
 main.5de1009f.css

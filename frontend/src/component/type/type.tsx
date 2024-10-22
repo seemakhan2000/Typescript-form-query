@@ -1,4 +1,3 @@
-// types.ts
 export interface UserData {
   _id: string;
   username: string;

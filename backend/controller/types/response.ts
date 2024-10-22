@@ -1,13 +1,13 @@
 interface SuccessResponse<T> {
   success: true;
   message: string;
-  data?: T; // Optional data field for successful responses
+  data?: T;
 }
 
 interface ErrorResponse {
   success: false;
   message: string;
-  error?: string; // Optional error field for more detailed errors
+  error?: string;
 }
 
 export const successResponse = <T>(

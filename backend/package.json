@@ -21,10 +21,13 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.16.5",
     "@types/otp-generator": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.11.0",
+    "eslint": "^9.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node ./app.ts"
+    "start": "eslint ."
   }
 }

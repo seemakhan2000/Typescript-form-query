@@ -10,7 +10,6 @@ export const useAddUserMutation = (onFormSubmit: () => void) => {
   });
 };
 
-// Mutation for deleting a user
 export const useDeleteUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteUser, {
@@ -20,12 +19,11 @@ export const useDeleteUserMutation = () => {
   });
 };
 
-// Mutation for updating a user
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(updateUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries("users"); // Invalidate and refetch users query
+      queryClient.invalidateQueries("users");
     },
   });
 };
