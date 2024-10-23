@@ -80,8 +80,16 @@ export class UserController {
       await newUser.save();
 
       this.sendSuccessResponse(res, "Signup successful", 200, newUser);
-    } catch (error) {
-      console.error("Signup error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Signup error:", error);
+      }
       this.sendErrorResponse(res, "Failed to create user");
     }
   }
@@ -119,8 +127,16 @@ export class UserController {
       });
 
       this.sendSuccessResponse(res, "Login successful", 200, { token });
-    } catch (error) {
-      console.error("Login error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Login error:", error);
+      }
       this.sendErrorResponse(res, "Failed to login");
     }
   }
@@ -129,12 +145,19 @@ export class UserController {
     try {
       const result = await ReactModel.find();
       this.sendSuccessResponse(res, "Data retrieved successfully", 200, result);
-    } catch (error) {
-      console.error("Get user error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Get user error:", error);
+      }
       this.sendErrorResponse(res, "Failed to retrieve data");
     }
   }
-
   async postUser(req: Request, res: Response): Promise<void> {
     const user = req.body;
 
@@ -149,8 +172,16 @@ export class UserController {
 
       const savedUser = await ReactModel.create(user);
       this.sendSuccessResponse(res, "User saved successfully", 201, savedUser);
-    } catch (error) {
-      console.error("Post user error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Post user error:", error);
+      }
       this.sendErrorResponse(res, "Failed to save user");
     }
   }
@@ -185,8 +216,16 @@ export class UserController {
         200,
         updatedUser
       );
-    } catch (error) {
-      console.error("Update user error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Update user error:", error);
+      }
       this.sendErrorResponse(res, "Failed to update user");
     }
   }
@@ -213,8 +252,16 @@ export class UserController {
         200,
         deletedUser
       );
-    } catch (error) {
-      console.error("Delete user error:", error);
+    } catch (error: any) {
+      if (
+        error instanceof ValidationError ||
+        error instanceof NotFound ||
+        error instanceof InvalidRequest
+      ) {
+        console.log(`${error.statusCode} Status Code: ${error.message}`);
+      } else {
+        console.error("Delete user error:", error);
+      }
       this.sendErrorResponse(res, "Failed to delete user");
     }
   }
